@@ -13,7 +13,10 @@ class AgentsController < ApplicationController
   end
 
   # GET /agents/1
-  def show; end
+  def show
+    ::Custom::Helpers.custom_class_method
+    ::Custom::Helpers.new.custom_instance_method
+  end
 
   # GET /agents/new
   def new
