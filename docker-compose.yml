@@ -1,0 +1,18 @@
+version: '3.9'
+
+services: 
+  app:
+    image: ruby-agent-clm-demo:latest
+    build:
+      context: .
+    environment:
+      # required
+      NEW_RELIC_LICENSE_KEY: $NEW_RELIC_LICENSE_KEY
+      # optional
+      NEW_RELIC_HOST: ${NEW_RELIC_HOST:-}
+    ports:
+      - 127.0.0.1:3000:3000
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./logs:/usr/src/app/log"
