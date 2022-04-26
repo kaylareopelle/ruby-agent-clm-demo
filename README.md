@@ -8,6 +8,12 @@ directory. This application is designed to perform
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
 operations for fictitious future New Relic language agents.
 
+By running the demo, the Ruby on Rails 7 application will be launched and
+daemonized and a `tester` shell script will perform [curl](https://curl.se/)
+commands that generate web traffic to exercise all traced Ruby methods.
+
+## Important Source Files
+
 For code level metrics, there are two important Ruby class files involved:
 
 - `app/controllers/agents_controller.rb`: A fairly standard Rails 7 controller
@@ -17,9 +23,22 @@ For code level metrics, there are two important Ruby class files involved:
   methods and 2 instance methods that will produce CLM data because of the
   transaction and method tracers that are applied to them
 
-By running the demo, the Ruby on Rails 7 application will be launched and
-daemonized and a `tester` shell script will perform [curl](https://curl.se/)
-commands that generate web traffic to exercise all traced Ruby methods.
+## Traced methods
+
+The CRUD tests will generate 3 separate Rails controller action based New Relic
+trace groups.
+
+These are `Controller/agents/create`, `Controller/agents/show`, and
+`Controller/agents/destroy`, which correspond to the `agents_controller.rb`
+class file's `create`, `show`, and `destroy` methods. These groups should
+each possess at least one span with CLM attributes.
+
+Furthermore, the `Controller/agents/show` group contains additional in-process
+spans named `OtherTransaction/Background/Custom::Helpers/custom_class_method`,
+`OtherTransaction/Background/Custom::Helpers/custom_instance_method`, 
+`Custom/CLMtesting/ClassMethod`, and `Custom/CLMtesting/InstanceMethod`.
+These four additional spans contain CLM attributes related to the
+`custom_helpers.rb` file.
 
 ## Running the Demo With Docker
 
@@ -40,7 +59,8 @@ commands that generate web traffic to exercise all traced Ruby methods.
 1. Stop Docker Compose via `make down` or `docker-compose down`
 1. Optionally delete old logs and other temporary content via `make clean`
 1. Optionally discard the Docker image via `make rmi`
-1. If the Ruby agent was successful in posting data to New Relic, it should soon be available in the web UI.
+1. If the Ruby agent was successful in posting data to New Relic, the data
+   should soon be available in the web UI. The URL can be obtained via `make url`.
 
 ## Development and Debugging
 

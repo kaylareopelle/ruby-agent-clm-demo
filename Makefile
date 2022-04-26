@@ -1,4 +1,4 @@
-all: up down logs bash rmi clean
+all: up down logs bash rmi url clean
 .PHONY : all
 
 up:
@@ -14,7 +14,10 @@ bash:
 	  docker run --rm -it --entrypoint bash ruby-agent-clm-demo
 
 rmi:
-	docker rmi `docker images ruby-agent-clm-demo --quiet`
+	  docker rmi `docker images ruby-agent-clm-demo --quiet`
+
+url:
+	  grep 'INFO : Reporting to: https://' logs/newrelic_agent.log | awk '{print $$10}'
 
 clean:
 	  rm -rf logs/*
