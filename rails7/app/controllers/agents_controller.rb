@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require Rails.root.join('lib/custom_helpers')
+require Rails.root.join('lib/which_is_which')
 
 class AgentsController < ApplicationController
   before_action :set_agent, only: %i[show edit update destroy]
@@ -16,6 +17,8 @@ class AgentsController < ApplicationController
   def show
     ::Custom::Helpers.custom_class_method
     ::Custom::Helpers.new.custom_instance_method
+    ::WhichIsWhich.samename
+    ::WhichIsWhich.new.samename
   end
 
   # GET /agents/new
