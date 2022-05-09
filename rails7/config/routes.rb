@@ -7,5 +7,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
+  namespace :admin, path: '/admin' do
+    root to: 'settings#index'
+  end
+
   root 'agents#index'
 end

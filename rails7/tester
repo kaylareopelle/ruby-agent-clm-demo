@@ -31,11 +31,17 @@ while true; do
       echo "ERROR: failed to obtain an id for $language!" >> $logfile
       continue
     fi
+
     # agents/show
     curl --silent http://localhost:3000/agents/$id >/dev/null
+
     # agents/destroy
     curl --silent -X DELETE http://localhost:3000/agents/$id >/dev/null
     echo "Completed a full set of operations." >> $logfile
+
+    # admin/index
+    curl --silent http://localhost:3000/admin >/dev/null
+
     # go too fast and the agent starts sampling
     sleep 3
   done
