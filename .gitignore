@@ -14,3 +14,4 @@ Gemfile.lock
 !/tmp/pids/.keep
 /public/assets
 /config/master.key
+/.idea

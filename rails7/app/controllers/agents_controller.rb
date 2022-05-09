@@ -57,6 +57,7 @@ class AgentsController < ApplicationController
   # DELETE /agents/1
   def destroy
     @agent.destroy
+    NotifierJob.perform_later "#{@agent.id} destroyed"
 
     respond_to do |format|
       format.html { redirect_to agents_url, notice: 'Agent was successfully destroyed.' }
