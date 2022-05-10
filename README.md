@@ -61,21 +61,20 @@ The `rails7/app/jobs/notifier_job.rb` file defines the `NotifierJob` class.
 This ActiveJob based class has the standard `perform` instance method that
 serves as the single point of public entry into the job class.
 
-CLM spans for this class will appear in New Relic nested beneath the `destroy`
-method for the `AgentsController` class, as that method is what the demo uses
-to enqueue all jobs. For non demo apps, jobs can be enqueued from anywhere.
+CLM spans for this class will appear in New Relic as "non-web". The `perform`
+method produces the following New Relic trace name:
 
-The `perform` method produces the following New Relic trace name:
+- `OtherTransaction/ActiveJob::Async/NotifierJob/execute`
 
-- `MessageBroker/ActiveJob::Async/Queue/Produce/Named/default`
+NOTE: The "Async" part of the trace name can be different between instances
+of Rails applications. Starting with Ruby on Rails version 5, "Async" is the
+default ActiveJob queue adapter, but it should not be used for production
+traffic. In production it is likely that another background job adapter will be
+in play. See the [complete list](https://edgeapi.rubyonrails.org/classes/ActiveJob/QueueAdapters.html) 
+of adapters for details.
 
-NOTE: Metrics for ActiveJob are available in New Relic separately for "non-web"
-transactions, but the CLM attributes use the above trace name which is nested
-beneath the transaction that was open when the job executed.
-
-NOTE: The "Async" part of the trace name can be different. Starting with Ruby
-on Rails version 5, "Async" is the default ActiveJob queue adapter. Other
-background job adapters can be used. See the [complete list](https://edgeapi.rubyonrails.org/classes/ActiveJob/QueueAdapters.html) for details.
+NOTE: The "execute" part of the trace name is hardcoded and will not change
+between jobs.
 
 ### Custom::Helpers
 
