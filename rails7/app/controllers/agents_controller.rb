@@ -10,6 +10,8 @@ class AgentsController < ApplicationController
   # GET /agents
   def index
     @agents = Agent.all
+    NewRelic::Agent.notice_error('one')
+    NewRelic::Agent.notice_error('two')
     render @agents, formats: %i[html json]
   end
 
